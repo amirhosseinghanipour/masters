@@ -24,3 +24,12 @@ Cargo.lock
 
 # Audio files
 *.wav
+
+# Embeddings
+*.json
+*.pt 
+
+# Python
+.venv
+.env
+__pycache__/

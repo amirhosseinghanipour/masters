@@ -1,8 +1,9 @@
-mod infrastructure;
+mod preprocessing;
 mod domain;
+mod embeddings;
 
-use infrastructure::audio::Segmenter;
-use infrastructure::augmentation::Augmenter;
+use preprocessing::segmenter::Segmenter;
+use preprocessing::augmenter::Augmenter;
 use domain::errors::AppError;
 use domain::entities::AudioSegment;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -68,5 +69,15 @@ fn main() -> Result<(), AppError> {
         println!("Augmentation already done, skipping...");
     }
 
+    let embeddings_path = "output/embeddings/embeddings.json";
+    if Path::new(embeddings_path).exists() {
+        println!("Embeddings already generated at {}, skipping training and evaluation...", embeddings_path);
+    } else {
+        println!("Starting training...");
+        let trainer = Trainer::new("config/embeddings.toml")?;
+        trainer.train()?;
+        trainer.evaluate()?;
+    }
+    
     Ok(())
 }

@@ -24,15 +24,15 @@ pub struct Augmenter<'a> {
 impl<'a> Augmenter<'a> {
     pub fn new(sample_rate: u32, output_dir: &'a str) -> Self {
         let augmentations: Vec<Box<dyn Augmentation>> = vec![
-            Box::new(BackgroundNoise { level: 0.02 }),
-            Box::new(TimeStretch { rate: 1.5, target_length: sample_rate * 2 }),
-            Box::new(TimeStretch { rate: 0.5, target_length: sample_rate * 2 }),
-            Box::new(PitchShift { n_steps: 3.0 }),
-            Box::new(PitchShift { n_steps: -3.0 }),
+            Box::new(BackgroundNoise { level: 0.05 }),
+            Box::new(TimeStretch { rate: 1.2, target_length: sample_rate * 2 }),
+            Box::new(TimeStretch { rate: 0.9, target_length: sample_rate * 2 }),
+            Box::new(PitchShift { n_steps: 1.0 }),
+            Box::new(PitchShift { n_steps: -1.0 }),
             Box::new(TimeShift { shift_amount: 500 }),
             Box::new(VolumeScale { factor: 1.5 }),
             Box::new(VolumeScale { factor: 0.5 }),
-            Box::new(ClipDistortion { level: 0.4 }),
+            Box::new(ClipDistortion { level: 0.6 }),
         ];
         Augmenter { sample_rate, output_dir, augmentations }
     }

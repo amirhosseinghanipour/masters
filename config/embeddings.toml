@@ -1,0 +1,13 @@
+[training]
+batch_size = 16
+epochs = 50
+temperature = 0.5
+data_dir = "data/augmented/"
+
+[model]
+device = "cuda_if_available"
+embedding_size = 256
+model_path = "src/wavlm/wavlm_base.pt"
+
+[evaluation]
+output_file = "output/embeddings/embeddings.json"
