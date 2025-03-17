@@ -1,0 +1,10 @@
+[package]
+name = "masters"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dasp-rs = "0.1.0"
+hound = "3.5.1"
+indicatif = "0.17.11"
+thiserror = "2.0.12"
