@@ -5,6 +5,7 @@ use rand::Rng;
 use rustfft::FftPlanner;
 use num_complex::Complex;
 use std::fs;
+use std::path::Path;
 
 #[allow(dead_code)]
 pub trait Augmentation {
@@ -41,10 +42,18 @@ impl<'a> Augmenter<'a> {
         Ok(())
     }
 
-    pub fn augment_file(&self, segment: &AudioSegment, file_id: usize) -> Result<(), AppError> {
+    pub fn augment_file(&self, segment: &AudioSegment, original_path: &str) -> Result<(), AppError> {
+        let path = Path::new(original_path);
+        let base_name = path.file_stem()
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| AppError::Io(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Invalid filename"
+            )))?;
+
         for aug in &self.augmentations {
             let augmented = aug.apply(segment)?;
-            let output_path = format!("{}/{:02}_{}", self.output_dir, file_id, aug.name());
+            let output_path = format!("{}/{}_{}.wav", self.output_dir, base_name, aug.name());
             let audio_data = dasp_rs::AudioData {
                 samples: augmented.samples.clone(),
                 sample_rate: augmented.sample_rate,
